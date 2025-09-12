@@ -33,7 +33,6 @@ fun IntroductionScreen(
     var selectedMood by remember { mutableStateOf<String?>(null) }
     val context = LocalContext.current
 
-    // Konversi nama file (String) dari avatar yang dipilih menjadi ID Resource (Int)
     val imageId = remember(avatar?.imageResName) {
         if (avatar != null) {
             context.resources.getIdentifier(
@@ -42,7 +41,7 @@ fun IntroductionScreen(
                 context.packageName
             )
         } else {
-            0 // Default jika tidak ada avatar
+            0
         }
     }
 
@@ -66,7 +65,7 @@ fun IntroductionScreen(
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
             Image(
-                // Gunakan imageId yang sudah dikonversi
+
                 painter = painterResource(id = if (imageId != 0) imageId else R.drawable.cat_thumb),
                 contentDescription = avatar?.name ?: "Avatar",
                 modifier = Modifier.height(200.dp)
@@ -91,7 +90,7 @@ fun IntroductionScreen(
                     modifier = Modifier.offset(y = (-8).dp)
                 ) {
                     Text(
-                        // Gunakan nama dari objek avatar
+
                         text = "Hi ${username.ifEmpty { avatar?.name ?: "Player" }}, what's\nyour mood like today?",
                         color = TextWhite,
                         modifier = Modifier.padding(horizontal = 32.dp, vertical = 16.dp),
@@ -141,7 +140,6 @@ private fun MoodButton(
     }
 }
 
-// Perbarui dummy data agar cocok dengan data class (menggunakan String)
 private val dummyAvatarForPreview = Avatar("Berrychan", "cat_strawberry")
 
 @Preview(showBackground = true, device = "id:pixel_4")

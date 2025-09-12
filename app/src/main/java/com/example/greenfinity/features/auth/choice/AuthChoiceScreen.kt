@@ -24,14 +24,14 @@ fun AuthChoiceScreen(
 ) {
     Surface(
         modifier = Modifier.fillMaxSize(),
-        color = MediumGreen // Menggunakan warna yang sedikit berbeda
+        color = MediumGreen
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 48.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center // Pusatkan semua elemen
+            verticalArrangement = Arrangement.Center
         ) {
             Text(
                 text = "Greenfinity",
@@ -40,7 +40,7 @@ fun AuthChoiceScreen(
                 fontWeight = FontWeight.Bold
             )
 
-            Spacer(modifier = Modifier.height(128.dp)) // Jarak antara judul dan tombol
+            Spacer(modifier = Modifier.height(128.dp))
 
             // Tombol Register
             AuthButton(
@@ -59,14 +59,14 @@ fun AuthChoiceScreen(
     }
 }
 
-// Composable terpisah untuk tombol agar kode tidak berulang
+
 @Composable
 private fun AuthButton(text: String, onClick: () -> Unit) {
     Button(
         onClick = onClick,
         shape = RoundedCornerShape(16.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = DarkGreen // Warna tombol lebih gelap
+            containerColor = DarkGreen
         ),
         modifier = Modifier
             .fillMaxWidth()

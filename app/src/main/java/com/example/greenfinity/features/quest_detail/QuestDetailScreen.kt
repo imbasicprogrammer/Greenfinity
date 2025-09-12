@@ -32,8 +32,7 @@ import com.example.greenfinity.data.db.entity.Quest
 import com.example.greenfinity.features.viewmodels.ViewModelFactory
 import com.example.greenfinity.ui.theme.*
 
-// Data class dan dummy data ini bisa dipindahkan ke file lain
-// Saya biarkan di sini agar preview tetap berfungsi
+
 data class QuestDetail(
     val id: Int,
     val title: String,
@@ -63,7 +62,6 @@ fun QuestDetailScreen(
         return
     }
 
-    // Konversi nama gambar (String) dari database menjadi ID Resource (Int)
     val imageId = remember(quest!!.imageResName) {
         context.resources.getIdentifier(
             quest!!.imageResName,
@@ -95,7 +93,6 @@ fun QuestDetailScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
-                // Gunakan imageId yang sudah dikonversi
                 painter = painterResource(id = if (imageId != 0) imageId else R.drawable.cat_thumb),
                 contentDescription = quest!!.title,
                 contentScale = ContentScale.Crop,

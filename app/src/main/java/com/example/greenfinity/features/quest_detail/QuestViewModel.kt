@@ -48,23 +48,19 @@ class QuestViewModel(
             val user = userDao.getCurrentUser().firstOrNull()
 
             if (quest != null && user != null) {
-                // 1. Tambah poin user
                 var newPoints = user.points + quest.points
                 var newLevel = user.level
 
-                // 2. Cek kenaikan level
                 val pointsNeededForNextLevel = newLevel * 100
                 if (newPoints >= pointsNeededForNextLevel) {
                     newLevel++
                     newPoints -= pointsNeededForNextLevel
-                    // TODO: Tampilkan notifikasi naik level
+
                 }
 
-                // 3. Simpan progres user yang baru
                 val updatedUser = user.copy(points = newPoints, level = newLevel)
                 userDao.updateUser(updatedUser)
 
-                // 4. Catat quest yang selesai di riwayat
                 val completion = QuestCompletion(
                     questId = quest.id,
                     questTitle = quest.title,
@@ -72,7 +68,6 @@ class QuestViewModel(
                 )
                 questCompletionDao.insert(completion)
 
-                // 5. Jalankan callback setelah semua selesai
                 onQuestFinished()
             }
         }

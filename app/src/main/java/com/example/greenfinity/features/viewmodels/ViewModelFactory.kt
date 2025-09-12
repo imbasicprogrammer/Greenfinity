@@ -10,7 +10,6 @@ import com.example.greenfinity.features.home.HomeViewModel
 import com.example.greenfinity.features.profile.ProfileViewModel
 import com.example.greenfinity.features.quest_detail.QuestViewModel
 
-// Daftarkan semua ViewModel Anda di sini
 class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         val database = AppDatabase.getDatabase(context)
@@ -18,8 +17,7 @@ class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory
             @Suppress("UNCHECKED_CAST")
             return ChallengesViewModel(AppDatabase.getDatabase(context).questDao()) as T
         }
-        // Tambahkan ViewModel lain di sini nanti
-        // if (modelClass.isAssignableFrom(ProfileViewModel::class.java)) { ... }
+
         if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
             return HomeViewModel(database.userDao(), database.questDao(), database.questCompletionDao()) as T

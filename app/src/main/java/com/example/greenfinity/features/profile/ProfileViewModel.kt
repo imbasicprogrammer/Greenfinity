@@ -15,11 +15,9 @@ class ProfileViewModel(
     questCompletionDao: QuestCompletionDao
 ) : ViewModel() {
 
-    // Mengambil data user yang sedang aktif dari database
     val currentUser: StateFlow<User?> = userDao.getCurrentUser()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
 
-    // Mengambil semua riwayat quest yang telah diselesaikan
     val completedQuests: StateFlow<List<QuestCompletion>> = questCompletionDao.getAllCompletions()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 }

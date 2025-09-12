@@ -18,7 +18,7 @@ fun AuthTextField(
     value: String,
     onValueChange: (String) -> Unit,
     label: String,
-    leadingIcon: ImageVector, // <-- Parameter ikon ditambahkan kembali
+    leadingIcon: ImageVector,
     keyboardType: KeyboardType = KeyboardType.Text,
     isPasswordField: Boolean = false
 ) {
@@ -27,7 +27,6 @@ fun AuthTextField(
         onValueChange = onValueChange,
         modifier = modifier,
         label = { Text(label, color = DarkGreen.copy(alpha = 0.7f)) },
-        // Ikon ditampilkan di sini
         leadingIcon = { Icon(imageVector = leadingIcon, contentDescription = null, tint = DarkGreen) },
         colors = TextFieldDefaults.colors(
             focusedContainerColor = Color.Transparent,

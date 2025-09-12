@@ -38,7 +38,7 @@ fun RegisterScreen(
     var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    val context = LocalContext.current // <-- 1. Dapatkan Context
+    val context = LocalContext.current
 
     Box(
         modifier = Modifier
@@ -98,13 +98,10 @@ fun RegisterScreen(
                 )
                 Spacer(modifier = Modifier.height(32.dp))
                 Button(
-                    // 2. Tambahkan Pengecekan di sini
                     onClick = {
                         if (name.isNotBlank() && email.isNotBlank() && password.isNotBlank()) {
-                            // Jika semua terisi, panggil navigasi
                             onRegisterClicked(name, email, password)
                         } else {
-                            // Jika ada yang kosong, tampilkan pesan
                             Toast.makeText(context, "Semua kolom wajib diisi!", Toast.LENGTH_SHORT).show()
                         }
                     },

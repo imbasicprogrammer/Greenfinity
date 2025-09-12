@@ -30,7 +30,7 @@ fun WelcomeScreen(onGetStarted: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(DarkGreen) // Menggunakan warna DarkGreen sebagai background utama
+            .background(DarkGreen)
             .padding(24.dp)
     ) {
         Column(
@@ -38,14 +38,14 @@ fun WelcomeScreen(onGetStarted: () -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            Spacer(modifier = Modifier.height(64.dp)) // Memberi jarak dari atas
+            Spacer(modifier = Modifier.height(64.dp))
 
             // Logo dan Welcome Text
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Image(
-                    painter = painterResource(id = R.drawable.logo_welcome), // Ganti dengan drawable logo Anda
+                    painter = painterResource(id = R.drawable.logo_welcome),
                     contentDescription = "Greenfinity Logo",
-                    modifier = Modifier.width(200.dp) // Sesuaikan ukuran logo
+                    modifier = Modifier.width(200.dp)
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
@@ -64,9 +64,9 @@ fun WelcomeScreen(onGetStarted: () -> Unit) {
 
             // Gambar Maskot
             Image(
-                painter = painterResource(id = R.drawable.mascot_welcome), // Ganti dengan drawable maskot Anda
+                painter = painterResource(id = R.drawable.mascot_welcome),
                 contentDescription = "Mascot",
-                modifier = Modifier.size(250.dp) // Sesuaikan ukuran maskot
+                modifier = Modifier.size(250.dp)
             )
 
             // Slogan
@@ -75,10 +75,10 @@ fun WelcomeScreen(onGetStarted: () -> Unit) {
                 color = TextWhite.copy(alpha = 0.8f),
                 fontSize = 18.sp,
                 textAlign = TextAlign.Center,
-                lineHeight = 28.sp // Memberi jarak antar baris
+                lineHeight = 28.sp
             )
 
-            Spacer(modifier = Modifier.height(64.dp)) // Memberi jarak dari tombol
+            Spacer(modifier = Modifier.height(64.dp))
         }
 
         // Tombol "Get start"
@@ -87,24 +87,24 @@ fun WelcomeScreen(onGetStarted: () -> Unit) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(60.dp)
-                .align(Alignment.BottomCenter) // Posisikan di bawah tengah
+                .align(Alignment.BottomCenter)
                 .shadow(elevation = 8.dp, shape = CircleShape, ambientColor = Color.Black.copy(alpha = 0.5f)),
             shape = CircleShape,
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color.LightGray.copy(alpha = 0.5f), // Warna abu-abu transparan
+                containerColor = Color.LightGray.copy(alpha = 0.5f),
                 contentColor = TextWhite
             ),
-            contentPadding = PaddingValues(0.dp) // Hapus padding default
+            contentPadding = PaddingValues(0.dp)
         ) {
-            // Gradient di atas tombol agar terlihat seperti gambar
+
             Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(
                         brush = Brush.verticalGradient(
                             colors = listOf(
-                                Color.White.copy(alpha = 0.2f), // Lebih terang di atas
-                                Color.Transparent // Transparan di bawah
+                                Color.White.copy(alpha = 0.2f),
+                                Color.Transparent
                             )
                         )
                     ),

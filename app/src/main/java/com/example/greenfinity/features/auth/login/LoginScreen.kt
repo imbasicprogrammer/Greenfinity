@@ -58,7 +58,6 @@ fun LoginScreen(
                 .padding(horizontal = 24.dp)
                 .fillMaxWidth(),
             shape = RoundedCornerShape(32.dp),
-            // 1. Warna Card diubah menjadi MediumGreen
             colors = CardDefaults.cardColors(containerColor = MediumGreen),
             elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
         ) {

@@ -37,11 +37,9 @@ fun ProfileScreen(
     viewModel: ProfileViewModel = viewModel(factory = ViewModelFactory(LocalContext.current)),
     onLogoutClicked: () -> Unit
 ) {
-    // Ambil data user dan riwayat dari ViewModel
     val user by viewModel.currentUser.collectAsState()
     val history by viewModel.completedQuests.collectAsState()
 
-    // Hitung progress bar untuk level selanjutnya
     val pointsForNextLevel = (user?.level ?: 1) * 100
     val progress = if (pointsForNextLevel > 0) {
         (user?.points?.toFloat() ?: 0f) / pointsForNextLevel
@@ -66,7 +64,7 @@ fun ProfileScreen(
         // Bagian Info User
         item {
             UserInfoSection(
-                avatarRes = R.drawable.cat_thumb, // Avatar masih statis, bisa dikembangkan
+                avatarRes = R.drawable.cat_thumb,
                 username = user?.username ?: "Memuat...",
                 level = user?.level ?: 1,
                 progress = progress
@@ -85,7 +83,7 @@ fun ProfileScreen(
             Spacer(modifier = Modifier.height(16.dp))
         }
 
-        // Bagian Riwayat
+
         item {
             Text(
                 text = "History",

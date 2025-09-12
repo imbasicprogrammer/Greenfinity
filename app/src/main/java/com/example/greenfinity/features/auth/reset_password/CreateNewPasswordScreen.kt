@@ -78,7 +78,6 @@ fun CreateNewPasswordScreen(
         ) {
             Spacer(modifier = Modifier.height(64.dp))
 
-            // 1. TULISAN DIBUAT RATA TENGAH
             Text(
                 text = "Create New Password",
                 fontSize = 28.sp,
@@ -189,12 +188,12 @@ private fun StyledTextField(
         value = value,
         onValueChange = onValueChange,
         placeholder = { Text(placeholder, color = DarkGreen.copy(alpha = 0.5f)) },
-        // 2. MODIFIER DIPERBARUI UNTUK MENAMBAHKAN BORDER
+
         modifier = Modifier
             .fillMaxWidth()
             .border(
                 width = 1.dp,
-                color = DarkGreen.copy(alpha = 0.1f), // Warna border transparan
+                color = DarkGreen.copy(alpha = 0.1f),
                 shape = RoundedCornerShape(16.dp)
             ),
         shape = RoundedCornerShape(16.dp),

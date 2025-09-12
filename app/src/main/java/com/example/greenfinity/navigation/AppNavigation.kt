@@ -1,4 +1,3 @@
-// navigation/AppNavigation.kt (KODE LENGKAP PENGGANTI FINAL)
 
 package com.example.greenfinity.navigation
 
@@ -49,11 +48,9 @@ fun AppNavigation() {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
-    // Inisialisasi kedua sumber data
     val userDao = remember { AppDatabase.getDatabase(context).userDao() }
     val userPreferences = remember { UserPreferences(context) }
 
-    // State untuk sesi login (dari DataStore) dan status loading
     var session by remember { mutableStateOf<LoginSession?>(null) }
     var isLoading by remember { mutableStateOf(true) }
 
@@ -62,14 +59,12 @@ fun AppNavigation() {
         isLoading = false
     }
 
-    // State untuk alur registrasi
     var registrationData by remember { mutableStateOf(User(id = 0, username = "", email = "", password = "")) }
     var selectedAvatarState by remember { mutableStateOf<Avatar?>(null) }
 
     if (isLoading) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
     } else {
-        // Halaman awal ditentukan oleh sesi di DataStore
         val startDestination = if (session?.isLoggedIn == true) AppRoutes.HOME else AppRoutes.WELCOME
 
         NavHost(
@@ -83,7 +78,6 @@ fun AppNavigation() {
             composable(AppRoutes.REGISTER) {
                 RegisterScreen(
                     onRegisterClicked = { name, email, password ->
-                        // Simpan semua data registrasi ke dalam state
                         registrationData = User(username = name, email = email, password = password)
                         navController.navigate(AppRoutes.USER_FORM)
                     },
@@ -114,7 +108,6 @@ fun AppNavigation() {
             composable(AppRoutes.RESET_PASSWORD) {
                 CreateNewPasswordScreen(
                     onPasswordSaved = {
-                        // Kembali ke halaman login setelah password berhasil disimpan
                         navController.popBackStack()
                     }
                 )
@@ -122,11 +115,9 @@ fun AppNavigation() {
 
             composable(AppRoutes.USER_FORM) {
                 UserFormScreen(
-                    // Kirim username yang sudah tersimpan dari RegisterScreen
                     initialUsername = registrationData.username,
                     onNavigateBack = { navController.popBackStack() },
                     onNavigateNext = { usernameDariForm ->
-                        // Update username jika diubah di form
                         registrationData = registrationData.copy(username = usernameDariForm)
                         navController.navigate(AppRoutes.AVATAR_CHOICE)
                     }
@@ -138,9 +129,7 @@ fun AppNavigation() {
                     username = registrationData.username,
                     onNavigateBack = { navController.popBackStack() },
                     onNavigateNext = { avatarYangDipilih ->
-                        // Simpan avatar yang dipilih ke state utama
                         selectedAvatarState = avatarYangDipilih
-                        // Pindah ke layar selanjutnya
                         navController.navigate(AppRoutes.INTRODUCTION)
                     }
                 )
@@ -153,11 +142,8 @@ fun AppNavigation() {
                     onNavigateBack = { navController.popBackStack() },
                     onFinish = {
                         scope.launch {
-                            // 1. Simpan akun permanen di Room
                             userDao.insertUser(registrationData)
-                            // 2. Simpan sesi login di DataStore
                             userPreferences.saveLoginSession()
-                            // 3. Navigasi ke Home
                             navController.navigate(AppRoutes.HOME) {
                                 popUpTo(AppRoutes.WELCOME) { inclusive = true }
                             }

@@ -17,7 +17,7 @@ import com.example.greenfinity.ui.theme.DarkGreen
 import com.example.greenfinity.ui.theme.TextWhite
 
 @Composable
-fun AuthBottomBar( // Namanya kita ubah menjadi lebih umum
+fun AuthBottomBar(
     currentPage: Int,
     onBack: () -> Unit,
     onNext: () -> Unit,

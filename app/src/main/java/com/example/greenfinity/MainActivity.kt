@@ -12,15 +12,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.greenfinity.ui.theme.GreenfinityTheme
-import com.example.greenfinity.navigation.AppNavigation // Import navigasi
-import com.example.greenfinity.ui.theme.GreenfinityTheme // Sesuaikan dengan nama tema Anda
+import com.example.greenfinity.navigation.AppNavigation
+import com.example.greenfinity.ui.theme.GreenfinityTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             GreenfinityTheme {
-                AppNavigation() // Cukup panggil ini
+                AppNavigation()
             }
         }
     }

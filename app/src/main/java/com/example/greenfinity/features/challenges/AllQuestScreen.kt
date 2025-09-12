@@ -90,14 +90,11 @@ private fun QuestItemCard(quest: Quest, onClick: () -> Unit) {
             .clickable(onClick = onClick),
         contentAlignment = Alignment.CenterStart
     ) {
-        // Card Teks (di belakang)
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                // 1. UBAH TINGGI CARD TEKS MENJADI LEBIH PENDEK
                 .height(110.dp)
                 .padding(start = 65.dp)
-                // 2. POSISIKAN DI TENGAH SECARA VERTIKAL
                 .align(Alignment.Center),
             shape = RoundedCornerShape(topStart = 20.dp, bottomStart = 20.dp, topEnd = 55.dp, bottomEnd = 55.dp),
             colors = CardDefaults.cardColors(containerColor = MediumGreen),
@@ -122,7 +119,7 @@ private fun QuestItemCard(quest: Quest, onClick: () -> Unit) {
         // Card Gambar (di depan)
         Card(
             modifier = Modifier
-                .size(130.dp), // Ukuran tetap 130dp
+                .size(130.dp),
             shape = RoundedCornerShape(20.dp),
             elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
         ) {

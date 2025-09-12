@@ -46,16 +46,14 @@ fun UserFormScreen(
     var selectedDateText by remember { mutableStateOf("") }
     var gender by remember { mutableStateOf<String?>(null) }
 
-    // 1. STATE UNTUK MENGONTROL POP-UP
     var showSuccessPopup by remember { mutableStateOf(false) }
 
-    // Logika untuk menampilkan pop-up
     if (showSuccessPopup) {
         SuccessPopup(
             message = "Nice! Your profile is set up.",
             onDismiss = {
-                showSuccessPopup = false // Tutup pop-up
-                onNavigateNext(username) // Lanjutkan navigasi setelah ditutup
+                showSuccessPopup = false
+                onNavigateNext(username)
             }
         )
     }
@@ -79,7 +77,6 @@ fun UserFormScreen(
                 currentPage = 0,
                 onBack = onNavigateBack,
                 onNext = {
-                    // 2. TAMPILKAN POP-UP, BUKAN LANGSUNG NAVIGASI
                     showSuccessPopup = true
                 }
             )
@@ -115,7 +112,6 @@ fun UserFormScreen(
 
             Button(
                 onClick = {
-                    // 3. TOMBOL SAVE JUGA MENAMPILKAN POP-UP
                     showSuccessPopup = true
                 },
                 modifier = Modifier
@@ -138,7 +134,6 @@ fun UserFormScreen(
     }
 }
 
-// --- Helper Composables tidak berubah ---
 
 @Composable
 fun InputLabel(text: String) {
@@ -268,7 +263,6 @@ fun ChatBubbleWithAvatar(username: String, message: String, avatarResId: Int) {
     }
 }
 
-// 3. FUNGSI EditProfileBottomBar SUDAH DIHAPUS DARI SINI
 
 @Preview(showBackground = true, device = "id:pixel_4")
 @Composable

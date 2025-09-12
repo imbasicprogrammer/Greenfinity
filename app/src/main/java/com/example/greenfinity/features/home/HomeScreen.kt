@@ -36,7 +36,6 @@ fun HomeScreen(
     viewModel: HomeViewModel = viewModel(factory = ViewModelFactory(LocalContext.current)),
     onNavigateToQuestDetail: (Int) -> Unit
 ) {
-    // Ambil semua data dari ViewModel
     val user by viewModel.currentUser.collectAsState()
     val progress by viewModel.levelProgress.collectAsState()
     val mainQuest by viewModel.mainQuest.collectAsState()
@@ -50,12 +49,9 @@ fun HomeScreen(
             .padding(24.dp),
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
-        // Gunakan data user untuk sapaan
         HeaderSection(username = user?.username ?: "pahlawan")
         MotivationCard()
-        // Gunakan data progress dan tasks
         ProgressSection(progress = progress, tasks = recentTasks.map { it.questTitle })
-        // Gunakan data main quest
         mainQuest?.let {
             MainQuestCard(quest = it, onNavigateToQuestDetail = onNavigateToQuestDetail)
         }
