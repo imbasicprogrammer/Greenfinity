@@ -25,23 +25,40 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.greenfinity.R
-import com.example.greenfinity.features.auth.components.AuthBottomBar // <-- 1. IMPORT KOMPONEN BERSAMA
+import com.example.greenfinity.features.auth.components.AuthBottomBar
 import com.example.greenfinity.ui.theme.*
 import java.util.Calendar
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import com.example.greenfinity.features.auth.components.SuccessPopup
+
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserFormScreen(
+    initialUsername: String,
     onNavigateBack: () -> Unit,
     onNavigateNext: (String) -> Unit
 ) {
-    var username by remember { mutableStateOf("") }
+    var username by remember { mutableStateOf(initialUsername) }
     var bio by remember { mutableStateOf("") }
     var selectedDateText by remember { mutableStateOf("") }
     var gender by remember { mutableStateOf<String?>(null) }
+
+    // 1. STATE UNTUK MENGONTROL POP-UP
+    var showSuccessPopup by remember { mutableStateOf(false) }
+
+    // Logika untuk menampilkan pop-up
+    if (showSuccessPopup) {
+        SuccessPopup(
+            message = "Nice! Your profile is set up.",
+            onDismiss = {
+                showSuccessPopup = false // Tutup pop-up
+                onNavigateNext(username) // Lanjutkan navigasi setelah ditutup
+            }
+        )
+    }
 
     val context = LocalContext.current
     val calendar = Calendar.getInstance()
@@ -58,11 +75,13 @@ fun UserFormScreen(
     Scaffold(
         containerColor = Color.White,
         bottomBar = {
-            // 2. GUNAKAN AUTHBOTTOMBAR DI SINI
             AuthBottomBar(
-                currentPage = 0, // Ini adalah halaman pertama (indeks 0) dari 3
+                currentPage = 0,
                 onBack = onNavigateBack,
-                onNext = { onNavigateNext(username) }
+                onNext = {
+                    // 2. TAMPILKAN POP-UP, BUKAN LANGSUNG NAVIGASI
+                    showSuccessPopup = true
+                }
             )
         }
     ) { paddingValues ->
@@ -81,15 +100,12 @@ fun UserFormScreen(
             InputLabel("Username :")
             CustomTextField(value = username, onValueChange = { username = it })
             Spacer(modifier = Modifier.height(16.dp))
-
             InputLabel("Bio :")
             CustomTextField(value = bio, onValueChange = { bio = it }, minLines = 3, singleLine = false)
             Spacer(modifier = Modifier.height(16.dp))
-
             InputLabel("Date of birth :")
             DateInputField(selectedDateText = selectedDateText) { datePickerDialog.show() }
             Spacer(modifier = Modifier.height(16.dp))
-
             InputLabel("Gender :")
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                 GenderCheckbox(text = "Male", isSelected = gender == "Male") { gender = "Male" }
@@ -98,7 +114,10 @@ fun UserFormScreen(
             Spacer(modifier = Modifier.height(32.dp))
 
             Button(
-                onClick = { onNavigateNext(username) },
+                onClick = {
+                    // 3. TOMBOL SAVE JUGA MENAMPILKAN POP-UP
+                    showSuccessPopup = true
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(60.dp)
@@ -108,10 +127,7 @@ fun UserFormScreen(
             ) {
                 Text("Save", color = TextWhite, fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
             }
-
             Spacer(modifier = Modifier.weight(1f))
-            Spacer(modifier = Modifier.height(16.dp))
-
             ChatBubbleWithAvatar(
                 username = username,
                 message = "Kamu adalah harapan baru bagi masa depan bumi",
@@ -121,7 +137,6 @@ fun UserFormScreen(
         }
     }
 }
-
 
 // --- Helper Composables tidak berubah ---
 
@@ -258,5 +273,9 @@ fun ChatBubbleWithAvatar(username: String, message: String, avatarResId: Int) {
 @Preview(showBackground = true, device = "id:pixel_4")
 @Composable
 fun UserFormScreenPreview() {
-    UserFormScreen(onNavigateBack = {}, onNavigateNext = {})
+    UserFormScreen(
+        initialUsername = "Greeny",
+        onNavigateBack = {},
+        onNavigateNext = {}
+    )
 }

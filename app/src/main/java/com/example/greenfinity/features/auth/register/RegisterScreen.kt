@@ -1,11 +1,14 @@
 package com.example.greenfinity.features.auth.register
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
@@ -16,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -34,13 +38,14 @@ fun RegisterScreen(
     var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    val context = LocalContext.current // <-- 1. Dapatkan Context
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White) // Latar belakang putih
+            .background(Color.White)
+            .verticalScroll(rememberScrollState())
     ) {
-        // Maskot di bagian atas, sedikit di bawah posisi logo
         Image(
             painter = painterResource(id = R.drawable.mascot_welcome),
             contentDescription = "Mascot",
@@ -49,20 +54,17 @@ fun RegisterScreen(
                 .padding(top = 80.dp)
                 .size(150.dp)
         )
-
-        // Card Form
         Card(
             modifier = Modifier
-                .align(Alignment.Center)
-                .fillMaxWidth()
+                .padding(top = 220.dp) // Beri jarak lebih untuk form
                 .padding(horizontal = 24.dp)
-                .offset(y = 80.dp), // Geser ke bawah
+                .fillMaxWidth(),
             shape = RoundedCornerShape(32.dp),
-            colors = CardDefaults.cardColors(containerColor = MediumGreen),
+            colors = CardDefaults.cardColors(containerColor = LightBackgroundGreen),
             elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
         ) {
             Column(
-                modifier = Modifier.padding(horizontal = 24.dp, vertical = 32.dp),
+                modifier = Modifier.padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
@@ -72,20 +74,18 @@ fun RegisterScreen(
                     color = DarkGreen
                 )
                 Spacer(modifier = Modifier.height(24.dp))
-
-                // Menambahkan leadingIcon untuk setiap field
                 AuthTextField(
                     value = name,
                     onValueChange = { name = it },
                     label = "Full Name",
-                    leadingIcon = Icons.Default.Person // <-- IKON DITAMBAHKAN
+                    leadingIcon = Icons.Default.Person
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 AuthTextField(
                     value = email,
                     onValueChange = { email = it },
                     label = "Email",
-                    leadingIcon = Icons.Default.Email, // <-- IKON DITAMBAHKAN
+                    leadingIcon = Icons.Default.Email,
                     keyboardType = KeyboardType.Email
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -93,15 +93,21 @@ fun RegisterScreen(
                     value = password,
                     onValueChange = { password = it },
                     label = "Password",
-                    leadingIcon = Icons.Default.Lock, // <-- IKON DITAMBAHKAN
+                    leadingIcon = Icons.Default.Lock,
                     isPasswordField = true
                 )
-
                 Spacer(modifier = Modifier.height(32.dp))
-
-                // Tombol Register dengan gaya baru
                 Button(
-                    onClick = { onRegisterClicked(name, email, password) },
+                    // 2. Tambahkan Pengecekan di sini
+                    onClick = {
+                        if (name.isNotBlank() && email.isNotBlank() && password.isNotBlank()) {
+                            // Jika semua terisi, panggil navigasi
+                            onRegisterClicked(name, email, password)
+                        } else {
+                            // Jika ada yang kosong, tampilkan pesan
+                            Toast.makeText(context, "Semua kolom wajib diisi!", Toast.LENGTH_SHORT).show()
+                        }
+                    },
                     shape = CircleShape,
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xFFE0E0E0),
@@ -114,10 +120,7 @@ fun RegisterScreen(
                 ) {
                     Text("Register", fontSize = 20.sp, fontWeight = FontWeight.Bold)
                 }
-
                 Spacer(modifier = Modifier.height(24.dp))
-
-                // Teks untuk navigasi ke halaman Login
                 Row {
                     Text("Already have an account? ", color = DarkGreen.copy(alpha = 0.7f))
                     Text(
@@ -132,7 +135,7 @@ fun RegisterScreen(
     }
 }
 
-@Preview(showBackground = true, device = "id:pixel_4")
+@Preview(showBackground = true)
 @Composable
 fun RegisterScreenPreview() {
     RegisterScreen(onRegisterClicked = { _, _, _ -> }, onNavigateToLogin = {})

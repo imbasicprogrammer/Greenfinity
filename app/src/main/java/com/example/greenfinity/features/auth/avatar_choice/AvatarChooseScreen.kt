@@ -14,11 +14,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,11 +29,9 @@ import com.example.greenfinity.data.model.Avatar
 import com.example.greenfinity.features.auth.components.AuthBottomBar
 import com.example.greenfinity.ui.theme.*
 
-// Data dummy, bisa diganti dari ViewModel nanti
 val dummyAvatars = listOf(
-    Avatar("Berrychan", R.drawable.cat_strawberry),
-    Avatar("Bready", R.drawable.cat_thumb),
-    // Tambahkan avatar lain di sini
+    Avatar("Berrychan", "cat_strawberry"),
+    Avatar("Bready", "cat_toast"),
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,7 +44,7 @@ fun AvatarChooseScreen(
     var selectedAvatar by remember { mutableStateOf<Avatar?>(null) }
 
     Scaffold(
-        containerColor = LightBackgroundGreen, // Ganti background jadi lebih terang
+        containerColor = LightBackgroundGreen,
         bottomBar = {
             AuthBottomBar(
                 currentPage = 1,
@@ -62,13 +60,9 @@ fun AvatarChooseScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(64.dp))
-
-            // Header baru dengan avatar yang menumpuk
             HeaderWithAvatar(username = username)
-
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Avatar List
             LazyRow(
                 modifier = Modifier.fillMaxWidth(),
                 contentPadding = PaddingValues(horizontal = 24.dp),
@@ -82,13 +76,10 @@ fun AvatarChooseScreen(
                     )
                 }
             }
-
             Spacer(modifier = Modifier.weight(1f))
-
-            // Tombol Save baru
             Button(
                 onClick = { selectedAvatar?.let { onNavigateNext(it) } },
-                enabled = selectedAvatar != null, // Tombol aktif jika avatar sudah dipilih
+                enabled = selectedAvatar != null,
                 modifier = Modifier
                     .fillMaxWidth(0.7f)
                     .height(60.dp)
@@ -98,14 +89,10 @@ fun AvatarChooseScreen(
             ) {
                 Text("Save", color = TextWhite, fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
             }
-
             Spacer(modifier = Modifier.height(32.dp))
         }
     }
 }
-
-// -- Helper Composables yang diperbarui --
-
 @Composable
 fun HeaderWithAvatar(username: String) {
     Box(
@@ -113,11 +100,10 @@ fun HeaderWithAvatar(username: String) {
             .fillMaxWidth()
             .padding(horizontal = 24.dp)
     ) {
-        // Chat Bubble
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 16.dp, end = 40.dp) // Beri ruang untuk avatar
+                .padding(top = 16.dp, end = 40.dp)
                 .shadow(elevation = 4.dp, shape = RoundedCornerShape(12.dp)),
             color = DarkGreen,
             shape = RoundedCornerShape(12.dp)
@@ -133,7 +119,6 @@ fun HeaderWithAvatar(username: String) {
                 )
             }
         }
-        // Chip "Greeny"
         Surface(
             modifier = Modifier
                 .align(Alignment.TopStart)
@@ -149,7 +134,6 @@ fun HeaderWithAvatar(username: String) {
                 modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp)
             )
         }
-        // Avatar Mascot
         Image(
             painter = painterResource(id = R.drawable.cat_headphone),
             contentDescription = "Mascot",
@@ -160,7 +144,6 @@ fun HeaderWithAvatar(username: String) {
     }
 }
 
-
 @Composable
 fun AvatarItem(
     avatar: Avatar,
@@ -168,6 +151,10 @@ fun AvatarItem(
     onClick: () -> Unit
 ) {
     val borderColor = if (isSelected) ButtonGreen else Color.Transparent
+    val context = LocalContext.current
+    val imageId = remember(avatar.imageResName) {
+        context.resources.getIdentifier(avatar.imageResName, "drawable", context.packageName)
+    }
 
     Card(
         shape = RoundedCornerShape(20.dp),
@@ -180,12 +167,12 @@ fun AvatarItem(
     ) {
         Box {
             Image(
-                painter = painterResource(id = avatar.imageRes),
+
+                painter = painterResource(id = if (imageId != 0) imageId else R.drawable.cat_thumb),
                 contentDescription = avatar.name,
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
             )
-            // Latar belakang teks semi-transparan di bawah
             Box(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
@@ -197,7 +184,6 @@ fun AvatarItem(
                         )
                     )
             )
-            // Teks Nama Avatar
             Text(
                 text = avatar.name,
                 color = TextWhite,
@@ -210,7 +196,6 @@ fun AvatarItem(
         }
     }
 }
-
 
 @Preview(showBackground = true, device = "id:pixel_4")
 @Composable

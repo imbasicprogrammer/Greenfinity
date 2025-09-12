@@ -1,6 +1,5 @@
 package com.example.greenfinity.features.auth.introduction
 
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -8,16 +7,18 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.graphics.Color
-import com.example.greenfinity.R // Sesuaikan package
-import com.example.greenfinity.features.auth.components.AuthBottomBar
-import com.example.greenfinity.ui.theme.* // Sesuaikan package
+import com.example.greenfinity.R
 import com.example.greenfinity.data.model.Avatar
+import com.example.greenfinity.features.auth.components.AuthBottomBar
+import com.example.greenfinity.ui.theme.*
 
 val moods = listOf("Anxiety", "Distracted", "Joy", "Surprised", "Stupid", "Calm")
 
@@ -30,16 +31,29 @@ fun IntroductionScreen(
     onFinish: () -> Unit
 ) {
     var selectedMood by remember { mutableStateOf<String?>(null) }
+    val context = LocalContext.current
+
+    // Konversi nama file (String) dari avatar yang dipilih menjadi ID Resource (Int)
+    val imageId = remember(avatar?.imageResName) {
+        if (avatar != null) {
+            context.resources.getIdentifier(
+                avatar.imageResName,
+                "drawable",
+                context.packageName
+            )
+        } else {
+            0 // Default jika tidak ada avatar
+        }
+    }
 
     Scaffold(
-        containerColor = LightBackgroundGreen, // Warna background terang
+        containerColor = LightBackgroundGreen,
         bottomBar = {
-            // Kita bisa pakai lagi UserFormBottomBar dengan parameter yang sesuai
             AuthBottomBar(
-                currentPage = 2, // Halaman ke-3 (indeks 2)
+                currentPage = 2,
                 onBack = onNavigateBack,
                 onNext = onFinish,
-                nextButtonText = "Finish" // Tambahkan teks "Finish"
+                nextButtonText = "Finish"
             )
         }
     ) { paddingValues ->
@@ -49,17 +63,15 @@ fun IntroductionScreen(
                 .padding(paddingValues)
                 .padding(horizontal = 32.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceEvenly // Beri jarak merata
+            verticalArrangement = Arrangement.SpaceEvenly
         ) {
-            // Gambar Kucing (Sekarang Dinamis)
             Image(
-                // Gunakan gambar dari avatar yang dipilih, atau gambar default jika null
-                painter = painterResource(id = avatar?.imageRes ?: R.drawable.cat_thumb), // <-- UBAH DI SINI
+                // Gunakan imageId yang sudah dikonversi
+                painter = painterResource(id = if (imageId != 0) imageId else R.drawable.cat_thumb),
                 contentDescription = avatar?.name ?: "Avatar",
                 modifier = Modifier.height(200.dp)
             )
 
-            // Chat Bubble
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Card(
                     colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -73,23 +85,21 @@ fun IntroductionScreen(
                         modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp)
                     )
                 }
-
-
                 Surface(
                     color = DarkGreen,
                     shape = RoundedCornerShape(12.dp),
                     modifier = Modifier.offset(y = (-8).dp)
                 ) {
                     Text(
-                        text = "Hi ${avatar?.name ?: "Player"}, what's\nyour mood like today?", // <-- UBAH DI SINI
+                        // Gunakan nama dari objek avatar
+                        text = "Hi ${username.ifEmpty { avatar?.name ?: "Player" }}, what's\nyour mood like today?",
                         color = TextWhite,
                         modifier = Modifier.padding(horizontal = 32.dp, vertical = 16.dp),
-                        textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                        textAlign = TextAlign.Center
                     )
                 }
             }
 
-            // Mood Buttons
             FlowRow(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center,
@@ -131,16 +141,15 @@ private fun MoodButton(
     }
 }
 
-
-private val dummyAvatarForPreview = Avatar("Berrychan", R.drawable.cat_strawberry)
+// Perbarui dummy data agar cocok dengan data class (menggunakan String)
+private val dummyAvatarForPreview = Avatar("Berrychan", "cat_strawberry")
 
 @Preview(showBackground = true, device = "id:pixel_4")
 @Composable
 fun IntroductionScreenPreview() {
-    // 2. KIRIM DATA DUMMY KE FUNGSI PREVIEW
     IntroductionScreen(
         username = "Greeny",
-        avatar = dummyAvatarForPreview, // <-- PERBAIKI DI SINI
+        avatar = dummyAvatarForPreview,
         onNavigateBack = {},
         onFinish = {}
     )

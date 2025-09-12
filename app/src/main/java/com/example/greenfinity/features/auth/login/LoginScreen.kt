@@ -30,7 +30,8 @@ import com.example.greenfinity.ui.theme.*
 @Composable
 fun LoginScreen(
     onLoginClicked: (String, String) -> Unit,
-    onNavigateToRegister: () -> Unit
+    onNavigateToRegister: () -> Unit,
+    onForgotPasswordClicked: () -> Unit
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -107,7 +108,12 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Button(
-                    onClick = { onLoginClicked(email, password) },
+                    onClick = {
+
+                        val cleanEmail = email.trim()
+                        val cleanPassword = password.trim()
+                        onLoginClicked(cleanEmail, cleanPassword)
+                    },
                     shape = CircleShape,
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xFFE0E0E0),
@@ -121,23 +127,26 @@ fun LoginScreen(
                     Text("Login", fontSize = 20.sp, fontWeight = FontWeight.Bold)
                 }
 
-                // 2. Bagian Social Login DIHAPUS dari sini
+
 
                 Spacer(modifier = Modifier.height(24.dp))
                 Text(
                     "Forgot Password",
                     color = DarkGreen.copy(alpha = 0.8f),
-                    modifier = Modifier.clickable { /* TODO */ }
+                    modifier = Modifier.clickable(onClick = onForgotPasswordClicked)
                 )
             }
         }
     }
 }
 
-// Fungsi SocialLoginButton dihapus karena tidak lagi digunakan
 
 @Preview(showBackground = true, device = "id:pixel_4")
 @Composable
 fun LoginScreenPreview() {
-    LoginScreen(onLoginClicked = { _, _ -> }, onNavigateToRegister = {})
+    LoginScreen(
+        onLoginClicked = { _, _ -> },
+        onNavigateToRegister = {},
+        onForgotPasswordClicked = {}
+    )
 }

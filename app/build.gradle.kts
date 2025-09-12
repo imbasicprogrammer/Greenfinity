@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.ksp)
 }
 
 android {
@@ -57,11 +58,18 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation(libs.androidx.material.icons.extended.v167)
 
+    implementation(libs.androidx.material.icons.extended)
     // Jetpack Compose Navigation (untuk perpindahan antar layar)
-    implementation(libs.androidx.navigation.compose.v277)
+    implementation(libs.androidx.navigation.compose)
 
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.3")
+    implementation(libs.androidx.datastore.preferences)
+
+    // Room Database
+    implementation(libs.androidx.room.runtime)
+    implementation("androidx.room:room-ktx:2.7.2")
+    ksp(libs.androidx.room.compiler)
 
 // ViewModel dan LiveData/StateFlow (untuk mengelola logika dan data per layar)
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.0")
